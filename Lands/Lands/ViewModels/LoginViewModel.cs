@@ -1,12 +1,18 @@
 ﻿namespace Lands.ViewModels
 {
     using GalaSoft.MvvmLight.Command;
-    using System;
     using System.Windows.Input;
     using Xamarin.Forms;
 
-    public class LoginViewModel
+    public class LoginViewModel : BaseViewModel
     {
+      
+        #region Atributes
+        private string password;
+        private bool isRunning;
+        private bool isEnable;
+        #endregion
+
         #region Properties
         public string Email
         {
@@ -16,20 +22,43 @@
 
         public string Password
         {
-            get;
-            set;
+            get
+            {
+                return this.password;
+            }
+            set
+            {
+                SetValue(ref this.password, value);
+            }
         }
 
         public bool IsRunning
         {
-            get;
-            set;
+            get
+            { return this.isRunning;
+            }
+            set
+            {
+                SetValue(ref this.isRunning, value);
+            }
         }
 
         public bool IsRemembered
         {
             get;
             set;
+        }
+
+        public bool IsEnabled
+        {
+            get
+            {
+                return this.isEnable;
+            }
+            set
+            { 
+                SetValue(ref this.isEnable, value);
+            }
         }
         #endregion
 
@@ -61,6 +90,32 @@
                     "Acept");
                 return;
             }
+
+            this.isRunning = true;
+            this.IsEnabled = false;
+
+            if (this.Email != "mapagu_1995@hotmail.com" || this.Password != "1234" )
+            {
+                this.isRunning = false;
+                this.IsEnabled = true;
+
+                await Application.Current.MainPage.DisplayAlert(
+                 "Error",
+                 "Email or password incorrect",
+                 "Acept");
+                this.Password = string.Empty;
+                return;
+            }
+
+            this.isRunning = false;
+            this.IsEnabled = true;
+
+            await Application.Current.MainPage.DisplayAlert(
+                 "Ok",
+                 "entering",
+                 "Acept");
+            return;
+        
         }
         #endregion
 
@@ -68,6 +123,7 @@
         public LoginViewModel()
         {
             this.IsRemembered = true;
+            this.IsEnabled = true;
         }
         #endregion
     }

@@ -89,6 +89,7 @@
                         BackgroundColor="#2E86C1"
                         BorderRadius="25"
                         Command="{Binding LoginCommand}"
+                        IsEnabled="{Binding IsEnabled, Mode=TwoWay}"
                         HeightRequest="50"
                         HorizontalOptions="FillAndExpand"
                         Text="Login"
