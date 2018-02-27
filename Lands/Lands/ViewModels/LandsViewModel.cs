@@ -1,7 +1,11 @@
 ﻿namespace Lands.ViewModels
 {
+    using System;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel; 
+    using System.Collections.ObjectModel;
+    using System.Linq;
+    using System.Windows.Input;
+    using GalaSoft.MvvmLight.Command;
     using Models;
     using Services;
     using Xamarin.Forms;
@@ -13,7 +17,10 @@
         #endregion
 
         #region Atributes
+        private bool isRefreshing;
         private ObservableCollection<Land> lands;
+        private string filter;
+        private List<Land> landList;
         #endregion
 
         #region Properties
@@ -26,6 +33,31 @@
             set
             {
                 SetValue(ref this.lands, value);
+            }
+        }
+
+        public bool IsRefreshing 
+        {
+            get
+            {
+                return this.isRefreshing;
+            }
+            set
+            {
+                SetValue(ref this.isRefreshing, value);
+            }
+        }
+
+        public string Filter
+        {
+            get
+            {
+                return this.filter;
+            }
+            set
+            {
+                SetValue(ref this.filter, value);
+                this.Search();
             }
         }
         #endregion
@@ -41,15 +73,16 @@
         #region Methods 
         private async void Loadlands()
         {
+            this.IsRefreshing = true;
             var connection = await this.apiService.CheckConnection();
 
             if (!connection.IsSuccess)
             {
+                this.IsRefreshing = false;
                 await Application.Current.MainPage.DisplayAlert(
                 "Error",
                 connection.Message,
                  "Accept");
-
                 await Application.Current.MainPage.Navigation.PopAsync();
                 return;
             }
@@ -60,6 +93,7 @@
                 "/v2/all"); 
             if (!response.IsSuccess)
             {
+                this.IsRefreshing = false;
                 await Application.Current.MainPage.DisplayAlert(
                     "Error",
                     response.Message,
@@ -67,8 +101,46 @@
                 return;
             }
 
-            var list= (List<Land>)response.Result;
-            this.Lands = new ObservableCollection<Land>(list);
+            this.landList= (List<Land>)response.Result;
+            this.Lands = new ObservableCollection<Land>(this.landList);
+            this.IsRefreshing = false;
+        }
+
+        #endregion
+
+        #region Commands
+        public ICommand RefreshCommand
+        { 
+            get
+            {
+                return new RelayCommand(Loadlands);
+            }
+            
+        }
+
+        public ICommand SearchCommand
+        {
+            get
+            {
+                return new RelayCommand(Search);
+            }
+
+        }
+
+        private void Search()
+        {
+            if (string.IsNullOrEmpty(this.Filter))
+            {
+                this.Lands = new ObservableCollection<Land>(
+                    this.landList);
+            }
+            else
+            {
+                this.Lands = new ObservableCollection<Land>(
+                    this.landList.Where(
+                        l => l.Name.ToLower().Contains(this.Filter.ToLower()) ||
+                        l.Capital.ToLower().Contains(this.Filter.ToLower())));
+            }
         }
 
         #endregion

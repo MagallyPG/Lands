@@ -99,12 +99,12 @@
                 return;
             }
 
-            this.isRunning = true;
+            this.IsRunning = true;
             this.IsEnabled = false;
 
             if (this.Email != "mapagu_1995@hotmail.com" || this.Password != "1234" )
             {
-                this.isRunning = false;
+                this.IsRunning = false;
                 this.IsEnabled = true;
 
                 await Application.Current.MainPage.DisplayAlert(
