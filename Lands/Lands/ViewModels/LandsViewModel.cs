@@ -10,7 +10,7 @@
     using Services;
     using Xamarin.Forms;
 
-    public class LandsViewModel :BaseViewModel
+    public class LandsViewModel : BaseViewModel
     {
         #region Services
         private ApiService apiService;
@@ -18,13 +18,14 @@
 
         #region Atributes
         private bool isRefreshing;
-        private ObservableCollection<Land> lands;
+        private ObservableCollection<LandItemViewModel> lands;
         private string filter;
-        private List<Land> landList;
+        private List<Land> landsList;
+        private LandItemViewModel landItemViewModel;
         #endregion
 
         #region Properties
-        public ObservableCollection<Land> Lands
+        public ObservableCollection<LandItemViewModel> Lands
         {
             get
             {
@@ -36,7 +37,7 @@
             }
         }
 
-        public bool IsRefreshing 
+        public bool IsRefreshing
         {
             get
             {
@@ -90,7 +91,7 @@
             var response = await this.apiService.GetList<Land>(
                 "http://restcountries.eu",
                 "/rest",
-                "/v2/all"); 
+                "/v2/all");
             if (!response.IsSuccess)
             {
                 this.IsRefreshing = false;
@@ -101,21 +102,55 @@
                 return;
             }
 
-            this.landList= (List<Land>)response.Result;
-            this.Lands = new ObservableCollection<Land>(this.landList);
+            this.landsList = (List<Land>)response.Result;
+            this.Lands = new ObservableCollection<LandItemViewModel>(
+            this.ToLandItemViewModel());
             this.IsRefreshing = false;
         }
+        #region Methos
+
+        private IEnumerable<LandItemViewModel> ToLandItemViewModel()
+        {
+            return this.landsList.Select(l => new LandItemViewModel
+            {
+                Alpha2Code = l.Alpha2Code,
+                Alpha3Code = l.Alpha3Code,
+                AltSpellings = l.AltSpellings,
+                Area = l.Area,
+                Borders = l.Borders,
+                CallingCodes = l.CallingCodes,
+                Capital = l.Capital,
+                Cioc = l.Cioc,
+                Currencies = l.Currencies,
+                Demonym = l.Demonym,
+                Flag = l.Flag,
+                Gini = l.Gini,
+                Languages = l.Languages,
+                Latlng = l.Latlng,
+                Name = l.Name,
+                NativeName = l.NativeName,
+                NumericCode = l.NumericCode,
+                Population = l.Population,
+                Region = l.Region,
+                RegionalBlocs = l.RegionalBlocs,
+                Subregion = l.Subregion,
+                Timezones = l.Timezones,
+                TopLevelDomain = l.TopLevelDomain,
+                Translations = l.Translations,
+            });
+        }
+        #endregion>
 
         #endregion
 
         #region Commands
         public ICommand RefreshCommand
-        { 
+        {
             get
             {
                 return new RelayCommand(Loadlands);
             }
-            
+
         }
 
         public ICommand SearchCommand
@@ -131,13 +166,16 @@
         {
             if (string.IsNullOrEmpty(this.Filter))
             {
-                this.Lands = new ObservableCollection<Land>(
-                    this.landList);
+                this.Lands = new ObservableCollection<LandItemViewModel>(
+                this.ToLandItemViewModel());
+                this.IsRefreshing = false;
+
             }
+
             else
             {
-                this.Lands = new ObservableCollection<Land>(
-                    this.landList.Where(
+                this.Lands = new ObservableCollection<LandItemViewModel>(
+                    this.ToLandItemViewModel().Where(
                         l => l.Name.ToLower().Contains(this.Filter.ToLower()) ||
                         l.Capital.ToLower().Contains(this.Filter.ToLower())));
             }
