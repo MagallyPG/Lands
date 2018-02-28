@@ -1,6 +1,5 @@
 ﻿namespace Lands.ViewModels
 {
-    using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
@@ -20,8 +19,6 @@
         private bool isRefreshing;
         private ObservableCollection<LandItemViewModel> lands;
         private string filter;
-        private List<Land> landsList;
-        private LandItemViewModel landItemViewModel;
         #endregion
 
         #region Properties
@@ -102,16 +99,17 @@
                 return;
             }
 
-            this.landsList = (List<Land>)response.Result;
+            MainViewModel.GetInstance().LandsList = (List<Land>)response.Result;
             this.Lands = new ObservableCollection<LandItemViewModel>(
             this.ToLandItemViewModel());
             this.IsRefreshing = false;
         }
-        #region Methos
+        #endregion
 
+        #region Methods
         private IEnumerable<LandItemViewModel> ToLandItemViewModel()
         {
-            return this.landsList.Select(l => new LandItemViewModel
+            return MainViewModel.GetInstance().LandsList.Select(l => new LandItemViewModel
             {
                 Alpha2Code = l.Alpha2Code,
                 Alpha3Code = l.Alpha3Code,
@@ -139,8 +137,6 @@
                 Translations = l.Translations,
             });
         }
-        #endregion>
-
         #endregion
 
         #region Commands
