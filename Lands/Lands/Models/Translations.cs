@@ -68,7 +68,7 @@
         }
 
         [JsonProperty(PropertyName = "fa")]
-        public string Danish
+        public string Persian
         {
             get;
             set;

@@ -9,9 +9,12 @@
     {
         #region Atributes
         private ObservableCollection<Border>  borders;
+        private ObservableCollection<Currency> currencies;
+        private ObservableCollection<Language> languages;
         #endregion
 
         #region Properties 
+
         public Land Land
             {
                 get;
@@ -29,14 +32,40 @@
                 this.SetValue(ref this.borders, value);
             }
         }
+        
+        public ObservableCollection<Currency> Currencies
+        {
+            get
+            {
+                return this.currencies;
+            }
+            set
+            {
+                this.SetValue(ref this.currencies, value);
+            }
+        }
+
+        public ObservableCollection<Language> Languagues
+        {
+            get
+            {
+                return this.languages;
+            }
+            set
+            {
+                this.SetValue(ref this.languages, value);
+            }
+        }
         #endregion
 
         #region Constructors
         public LandViewModel(Land land)
             {
-                this.Land = land;
-                this.LoadBordes();
-            }
+               this.Land = land;
+               this.LoadBordes();
+               this.Currencies = new ObservableCollection<Currency>(this.Land.Currencies);
+               this.Languagues = new ObservableCollection<Language>(this.Land.Languages);
+        }
         #endregion
 
         #region Methods
