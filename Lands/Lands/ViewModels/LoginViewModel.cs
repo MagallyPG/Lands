@@ -120,7 +120,7 @@
             }
 
             var token = await this.apiService.GetToken(
-                "http://landsapi4.azurewebsites.net",
+                "http://landsapim.azurewebsites.net",
                 this.Email,
                 this.Password);
 
@@ -129,7 +129,7 @@
                 this.IsRunning = false;
                 this.IsEnabled = true;
                 await Application.Current.MainPage.DisplayAlert(
-                    "Erroe",
+                    "Error",
                     "Something was wrong, please try later.",
                     "Accept");
                 return;
@@ -140,7 +140,7 @@
                 this.IsRunning = false;
                 this.IsEnabled = true;
                 await Application.Current.MainPage.DisplayAlert(
-                    "Erroe",
+                    "Error",
                     token.ErrorDescription,
                     "Accept");
                     this.Password = string.Empty;
@@ -151,11 +151,15 @@
             mainViewModel.Lands = new LandsViewModel();
             await Application.Current.MainPage.Navigation.PushAsync(new LandsPage());
 
-            this.isRunning = false;
-            this.IsEnabled = true;
 
             this.Email = string.Empty;
             this.Password = string.Empty;
+            this.isRunning = false;
+            this.IsEnabled = true;
+
+           
+            
+
         }
         #endregion
 
