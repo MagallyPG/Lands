@@ -19,15 +19,45 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="System.Configuration">
+      <HintPath>..\..\..\..\..\..\Windows\Microsoft.NET\Framework64\v4.0.30319\System.Configuration.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="App.xaml.cs">
       <DependentUpon>*.xaml</DependentUpon>
     </Compile>
     <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="MainPage.xaml.cs">
       <DependentUpon>*.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Resources\Resource.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resource.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="Resources\Resource.de.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Resource.es.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Resource.fr.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Resource.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Resource.ru.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Resource.zh.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Views\BordersPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>

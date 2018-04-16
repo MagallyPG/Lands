@@ -188,6 +188,12 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
+		RESX_TranslationPrefix = 
+		RESX_SortFileContentOnSave = True
+		RESX_ResXSortingComparison = CurrentCultureIgnoreCase
+		RESX_AutoCreateNewLanguageFiles = True
+		RESX_PrefixTranslations = True
+		RESX_ExcelExportMode = MultipleSheets
 		SolutionGuid = {7CAB6166-A3EA-4DB1-9A04-488E149668E9}
 	EndGlobalSection
 EndGlobal

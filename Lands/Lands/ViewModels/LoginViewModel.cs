@@ -151,15 +151,11 @@
             mainViewModel.Lands = new LandsViewModel();
             await Application.Current.MainPage.Navigation.PushAsync(new LandsPage());
 
-
-            this.Email = string.Empty;
-            this.Password = string.Empty;
             this.isRunning = false;
             this.IsEnabled = true;
 
-           
-            
-
+            this.Email = string.Empty;
+            this.Password = string.Empty;
         }
         #endregion
 
